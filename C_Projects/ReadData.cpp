@@ -11,7 +11,7 @@ using namespace std;
 
 class ReadData {
 private:
-    string* strings;
+    string *strings;
     long numberOfParticles;
     long length;
     double timeStep;
@@ -20,7 +20,7 @@ private:
     double eta;
 
 public:
-    ReadData(const string& file) {
+    ReadData(const string &file) {
         fstream newfile;
 
         //assuming that the file is within the directory "Parameter"
@@ -30,12 +30,12 @@ public:
 
         this->strings = new string[numberLines - 1];
 
-        if (newfile.is_open()){
+        if (newfile.is_open()) {
             string tp;
             int counter = 0;
-            for(int i = 0; i < numberLines; i++) {
+            for (int i = 0; i < numberLines; i++) {
                 getline(newfile, tp);
-                if(i == 0) {
+                if (i == 0) {
                     continue;
                 }
                 this->strings[i - 1] = tp;
@@ -46,17 +46,15 @@ public:
     }
 
 
-
 private:
-    int countLines(fstream& stream);
-    string splitString(string& str, string delimiter);
+    int countLines(fstream &stream);
 };
 
-int ReadData::countLines(fstream& stream) {
+int ReadData::countLines(fstream &stream) {
     int counter = 0;
-    if (stream.is_open()){
+    if (stream.is_open()) {
         string tp;
-        while(getline(stream, tp)) {
+        while (getline(stream, tp)) {
             counter++;
         }
     }
@@ -67,19 +65,9 @@ int ReadData::countLines(fstream& stream) {
     return counter;
 }
 
-string ReadData::splitString(string &str, string delimiter) {
-    char* temp = new char[1];
-
-    for(int i = 0; i < str.length(); i++) {
-        if(str[i] == ';') {
-            printf("%c\n", str[i]);
-        }
-    }
-
-    return temp;
-}
-
 int main(void) {
+
+    //just testing some things
 
     ReadData newData = *new ReadData("input.csv");
 
@@ -93,16 +81,14 @@ int main(void) {
     std::string segment;
     std::vector<std::string> seglist;
 
-    while(std::getline(test, segment, '_'))
-    {
+    while (std::getline(test, segment, '_')) {
         seglist.push_back(segment); //Spit string at '_' character
     }
 
-    for(int i = 0; i < seglist.size(); i++) {
+    for (int i = 0; i < seglist.size(); i++) {
         std::cout << seglist[i] << "\n";
     }
 
-    
 
     return EXIT_SUCCESS;
 }
