@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cstring>
 #include <vector>
 #include <sstream>
 
@@ -32,18 +31,51 @@ public:
 
         if (newfile.is_open()) {
             string tp;
-            int counter = 0;
             for (int i = 0; i < numberLines; i++) {
                 getline(newfile, tp);
                 if (i == 0) {
                     continue;
                 }
+                std::stringstream temp(tp);
+                std::string segment;
+                std::vector<std::string> seglist;
+
+                while (std::getline(temp, segment, ';')) {
+                    seglist.push_back(segment); //Spit string at ';' character
+                }
+
+                if (seglist[0] == "NumberParticles") {
+                    this->numberOfParticles = stoi(seglist[1]);
+                } else if (seglist[0] == "Length") {
+                    this->length = stod(seglist[1]);
+                } else if (seglist[0] == "TimeStep") {
+                    this->timeStep = stod(seglist[1]);
+                } else if (seglist[0] == "Radius") {
+                    this->radius = stod(seglist[1]);
+                } else if (seglist[0] == "Speed") {
+                    this->speed = stod(seglist[1]);
+                } else if (seglist[0] == "eta") {
+                    this->eta = stod(seglist[1]);
+                }
+
                 this->strings[i - 1] = tp;
             }
             newfile.close();
         }
 
     }
+
+    int getNumberParticles();
+
+    double getLength();
+
+    double getTimeStep();
+
+    double getRadius();
+
+    double getSpeed();
+
+    double getEta();
 
 
 private:
@@ -65,30 +97,26 @@ int ReadData::countLines(fstream &stream) {
     return counter;
 }
 
-int main(void) {
+int ReadData::getNumberParticles() {
+    return numberOfParticles;
+}
 
-    //just testing some things
+double ReadData::getLength() {
+    return length;
+}
 
-    ReadData newData = *new ReadData("input.csv");
+double ReadData::getTimeStep() {
+    return timeStep;
+}
 
-    /*std::string s = "scott>=tiger";
-    std::string delimiter = ">=";
-    std::string token = s.substr(7, s.find(delimiter)); // token is "scott"
+double ReadData::getRadius() {
+    return radius;
+}
 
-    std::cout << token << "\n";*/
+double ReadData::getSpeed() {
+    return speed;
+}
 
-    std::stringstream test("this_is_a_test_string");
-    std::string segment;
-    std::vector<std::string> seglist;
-
-    while (std::getline(test, segment, '_')) {
-        seglist.push_back(segment); //Spit string at '_' character
-    }
-
-    for (int i = 0; i < seglist.size(); i++) {
-        std::cout << seglist[i] << "\n";
-    }
-
-
-    return EXIT_SUCCESS;
+double ReadData::getEta() {
+    return eta;
 }
