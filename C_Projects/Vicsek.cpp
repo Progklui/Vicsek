@@ -64,9 +64,7 @@ Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, dou
         x[index] = x[index]*L/Lo;
         y[index] = y[index]*L/Lo;
 
-        double u1 = rand()/((double) 2*PI);
-        // double u2 = rand()/((double) RAND_MAX);
-
+        double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
         theta[index] = u1;
     }
 }
@@ -140,23 +138,34 @@ double Vicsek::calculate_va() {
     return va;
 }
 
-void Vicsek::md_equilibration(double dt, int Neq) {
+void Vicsek::md_equilibration(char *str, double dt, int Neq) {
     // equilibrate the system
     int nsave = Neq/1000;
 
     printf("Start of equilibration! \n");
     FILE * out;
-    out = fopen("equilibration.out", "w");
+    out = fopen(str, "w");
     for (int i=1; i <= Neq; i++) {
         md_step_vicsek(dt);
         if (i%nsave == 0) {
             double va = calculate_va();
             printf("t = %f, va = %f \n", i*dt, va);
-            fprintf(out,"%f %f\n", i*dt, va);
+            fprintf(out, "%f %f\n", i*dt, va);
         }
     }
     fclose(out);
     printf("Equilibration done! \n\n");
+}
+
+void Vicsek::store_configuration(double t) {
+    std::string config_name = "../simulation_results/configuration_t_" + std::to_string(t);
+
+    FILE * out;
+    out = fopen(config_name.c_str(), "w");
+    for (int i=0; i<N; i++) {
+        fprintf(out, "%f %f %f\n", x[i], y[i], theta[i]);
+    }
+    fclose(out);
 }
 
 void Vicsek::run_simulation(char *str, double dt, int Nsim, int Nsave) {
@@ -169,7 +178,8 @@ void Vicsek::run_simulation(char *str, double dt, int Nsim, int Nsave) {
         if (i%Nsave == 0) {
             double va = calculate_va();
             printf("t = %f, va = %f \n", i*dt, va);
-            fprintf(out,"%f %f\n", i*dt, va);
+            fprintf(out, "%f %f\n", i*dt, va);
+            store_configuration(i*dt);
         }
     }
     fclose(out);

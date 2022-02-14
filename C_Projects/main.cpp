@@ -38,10 +38,10 @@ int main (){
     system = new Vicsek(sigma, N, phi, D_rot, v, R);
 
     // Equilibration
-    system->md_equilibration(dt, Neq);
+    system->md_equilibration("../simulation_results/equilibration.out", dt, Neq);
 
     // Simulation
-    system->run_simulation("simulation.out", dt, Nsim, Nsave);
+    system->run_simulation("../simulation_results/simulation.out", dt, Nsim, Nsave);
 
     return 0;
 }

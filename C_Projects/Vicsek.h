@@ -7,8 +7,8 @@ class Vicsek {
         double calculate_va();
 
         void md_step_vicsek(double);
-        void md_equilibration(double, int);
-        void run_simulation(char *str, double, int, int);
+        void md_equilibration(char * str, double, int);
+        void run_simulation(char * str, double, int, int);
 
     private:
         int N;
@@ -33,4 +33,5 @@ class Vicsek {
         // private functions
         void pbc(double &x, double &y);
         double calculate_mean_angle(int);
+        void store_configuration(double);
 };
