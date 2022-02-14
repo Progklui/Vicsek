@@ -10,13 +10,7 @@ using namespace std;
 
 class ReadData {
 private:
-    string *strings;
-    long numberOfParticles;
-    long length;
-    double timeStep;
-    double radius;
-    double speed;
-    double eta;
+    double *dataArray;
 
 public:
     ReadData(const string &file) {
@@ -27,7 +21,7 @@ public:
 
         int numberLines = countLines(newfile);
 
-        this->strings = new string[numberLines - 1];
+        this->dataArray = new double[numberLines - 1];
 
         if (newfile.is_open()) {
             string tp;
@@ -44,38 +38,14 @@ public:
                     seglist.push_back(segment); //Spit string at ';' character
                 }
 
-                if (seglist[0] == "NumberParticles") {
-                    this->numberOfParticles = stoi(seglist[1]);
-                } else if (seglist[0] == "Length") {
-                    this->length = stod(seglist[1]);
-                } else if (seglist[0] == "TimeStep") {
-                    this->timeStep = stod(seglist[1]);
-                } else if (seglist[0] == "Radius") {
-                    this->radius = stod(seglist[1]);
-                } else if (seglist[0] == "Speed") {
-                    this->speed = stod(seglist[1]);
-                } else if (seglist[0] == "eta") {
-                    this->eta = stod(seglist[1]);
-                }
-
-                this->strings[i - 1] = tp;
+                dataArray[i - 1] = stod(seglist[1]);
             }
             newfile.close();
         }
 
     }
 
-    int getNumberParticles();
-
-    double getLength();
-
-    double getTimeStep();
-
-    double getRadius();
-
-    double getSpeed();
-
-    double getEta();
+    double *getData();
 
 
 private:
@@ -97,26 +67,6 @@ int ReadData::countLines(fstream &stream) {
     return counter;
 }
 
-int ReadData::getNumberParticles() {
-    return numberOfParticles;
-}
-
-double ReadData::getLength() {
-    return length;
-}
-
-double ReadData::getTimeStep() {
-    return timeStep;
-}
-
-double ReadData::getRadius() {
-    return radius;
-}
-
-double ReadData::getSpeed() {
-    return speed;
-}
-
-double ReadData::getEta() {
-    return eta;
+double *ReadData::getData() {
+    return dataArray;
 }
