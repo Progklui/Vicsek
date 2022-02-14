@@ -3,16 +3,22 @@
 #include <math.h>
 #include <string>
 #include <sstream>
+#include <string>
 
 #include "nrutil.h"
 #include "Vicsek.h"
 
 #define PI 3.1415926
 
-Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, double v_init, double R_init) {
+Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, double v_init, double R_init, double dt_init, int Nsim_init, int Nsave_init, char * dir_name_init) {
     // constructur: make a system of N spheres in the cubic box
     // x in [-L/2,L/2]
-    // y in [-L/2,L/2]
+    // y in [-L/2,L/2
+    dt       = dt_init;
+    Nsim     = Nsim_init;
+    Nsave    = Nsave_init;
+
+    dir_name = dir_name_init;
 
     // with initial positions on a cubic lattice and L such that the
     // correct packing fraction phi is obtained
@@ -67,6 +73,8 @@ Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, dou
         double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
         theta[index] = u1;
     }
+
+    save_simulation_params();
 }
 
 void Vicsek::pbc(double &x, double &y) {
@@ -138,50 +146,83 @@ double Vicsek::calculate_va() {
     return va;
 }
 
-void Vicsek::md_equilibration(char *str, double dt, int Neq) {
+void Vicsek::md_equilibration(int Neq) {
     // equilibrate the system
-    int nsave = Neq/1000;
+    int nsave = Neq/100;
+    char * file_name = "/1_equilibration.out";
 
-    printf("Start of equilibration! \n");
+    printf(" Start of equilibration! \n");
+
     FILE * out;
-    out = fopen(str, "w");
+    std::string buf(dir_name);
+    buf.append(file_name);
+    out = fopen(buf.c_str(), "w");
+
     for (int i=1; i <= Neq; i++) {
         md_step_vicsek(dt);
         if (i%nsave == 0) {
             double va = calculate_va();
-            printf("t = %f, va = %f \n", i*dt, va);
+            printf(" t = %f, va = %f \n", i*dt, va);
             fprintf(out, "%f %f\n", i*dt, va);
         }
     }
     fclose(out);
-    printf("Equilibration done! \n\n");
+    printf(" Equilibration done! \n\n");
 }
 
 void Vicsek::store_configuration(double t) {
-    std::string config_name = "../simulation_results/configuration_t_" + std::to_string(t);
+    std::string file_name = "/configuration_t_" + std::to_string(t);
 
     FILE * out;
-    out = fopen(config_name.c_str(), "w");
+    std::string buf(dir_name);
+    buf.append(file_name);
+    out = fopen(buf.c_str(), "w");
     for (int i=0; i<N; i++) {
         fprintf(out, "%f %f %f\n", x[i], y[i], theta[i]);
     }
     fclose(out);
 }
 
-void Vicsek::run_simulation(char *str, double dt, int Nsim, int Nsave) {
+void Vicsek::run_simulation() {
     // start of the simulation
-    printf("Start of simulation! \n");
+    char * file_name = "/2_simulation.out";
+
+    printf(" Start of simulation! \n");
+
     FILE * out;
-    out = fopen(str, "w");
+    std::string buf(dir_name);
+    buf.append(file_name);
+    out = fopen(buf.c_str(), "w");
+
     for (int i=1; i <= Nsim; i++) {
         md_step_vicsek(dt);
         if (i%Nsave == 0) {
             double va = calculate_va();
-            printf("t = %f, va = %f \n", i*dt, va);
+            printf(" t = %f, va = %f \n", i*dt, va);
             fprintf(out, "%f %f\n", i*dt, va);
             store_configuration(i*dt);
         }
     }
     fclose(out);
-    printf("Simulation done! \n\n");
+    printf(" Simulation done! \n\n");
+}
+
+void Vicsek::save_simulation_params() {
+    char * file_name = "/0_params.out";
+
+    FILE * out;
+    std::string buf(dir_name);
+    buf.append(file_name);
+    out = fopen(buf.c_str(), "w");
+
+    fprintf(out, "N, %i\n", N);
+    fprintf(out, "L, %f\n", L);
+    fprintf(out, "dt, %f\n", dt);
+    fprintf(out, "R, %f\n", R);
+    fprintf(out, "v, %f\n", v);
+    fprintf(out, "D, %f\n", D_rot);
+    fprintf(out, "Nsim, %i\n", Nsim);
+    fprintf(out, "Nsav, %i\n", Nsave);
+
+    fclose(out);
 }

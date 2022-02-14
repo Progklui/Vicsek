@@ -1,16 +1,20 @@
 class Vicsek {
     public:
-	      Vicsek(double, int, double, double, double, double);
+	      Vicsek(double, int, double, double, double, double, double, int, int, char *);
 
 	      double get_size();
         double get_packing_fraction();
         double calculate_va();
 
         void md_step_vicsek(double);
-        void md_equilibration(char * str, double, int);
-        void run_simulation(char * str, double, int, int);
+        void md_equilibration(int);
+        void run_simulation();
 
     private:
+        double dt;
+        int Nsim;
+        int Nsave;
+
         int N;
         int n;
         double L;
@@ -30,8 +34,11 @@ class Vicsek {
         //angle vector accounting for orientation
         double * theta;
 
+        char * dir_name;
+
         // private functions
         void pbc(double &x, double &y);
         double calculate_mean_angle(int);
         void store_configuration(double);
+        void save_simulation_params();
 };
