@@ -29,8 +29,8 @@ int main (){
     //simulation parameters
     double dt = 1.; // 0.0001; //time-step length
     int Neq   = 2000; // equilibration time
-    int Nsim  = 100000; // simulation time
-    int Nsave = 1000; // how often printed
+    int Nsim  = 1000; // simulation time
+    int Nsave = 10; // how often printed
 
     // initialize random number generator
     srand (12345);
