@@ -63,7 +63,6 @@ int main (int argc, char *argv[]){
     	printf("%lf\n",RArr[i]);
     }
 
-
     //simulation parameters
     double dt = data[4]; // 0.0001; //time-step length
     int Neq   = data[16]; // equilibration time
@@ -81,7 +80,7 @@ int main (int argc, char *argv[]){
     		for(long rN = 0; rN < N_R; rN++) {
     			for(long rD = 0; rD < N_D_rot; rD++) {
 			    // settings for directory structure - program automatically creates a sensible directory structure
-			    std::string dir_name_phys_params = "N_" + std::to_string(Ninit) + "_L_" + std::to_string(L) + "_v_" + std::to_string(vInit) + "_R_" + std::to_string(RInit) + "_D_" + std::to_string(D_rotInit);
+			    std::string dir_name_phys_params = "N_" + std::to_string(N) + "_L_" + std::to_string(L) + "_v_" + std::to_string(vArr[vN]) + "_R_" + std::to_string(RArr[rN]) + "_D_" + std::to_string(D_rotArr[rD]);
 			    std::string dir_name_sim_params  = "Neq_" + std::to_string(Neq) + "_Nsim_" + std::to_string(Nsim) + "_dt_" + std::to_string(dt);
 			    std::string dir_name             = "../simulation_results/" + dir_name_phys_params + "/"+ dir_name_sim_params;
 			    std::string save_dir_name        = "mkdir -p " + dir_name; // ../simulation_results/test";
@@ -89,7 +88,7 @@ int main (int argc, char *argv[]){
 
 			    // create the class and the initial configuration
 			    class Vicsek *system;
-			    system = new Vicsek(sigma, Ninit, phi, D_rotInit, vInit, RInit, dt, Nsim, Nsave, &dir_name[0]);
+			    system = new Vicsek(sigma, N, phi, D_rotArr[rD], vArr[vN], RArr[rN], dt, Nsim, Nsave, &dir_name[0]);
 
 			    system->md_equilibration(Neq); // Equilibration
 			    system->run_simulation(config); // Simulation
