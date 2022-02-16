@@ -11,15 +11,16 @@ using namespace std;
 class ReadData {
 private:
     double *dataArray;
+    int numberLines;
 
 public:
     ReadData(const string &file) {
         fstream newfile;
 
         //assuming that the file is within the directory "Parameter"
-        newfile.open("Parameter/" + file, ios::in);
+        newfile.open("../Parameter/" + file, ios::in);
 
-        int numberLines = countLines(newfile);
+        this->numberLines = countLines(newfile);
 
         this->dataArray = new double[numberLines - 1];
 
@@ -46,6 +47,8 @@ public:
     }
 
     double *getData();
+    
+    int numberInput();
 
 
 private:
@@ -69,4 +72,8 @@ int ReadData::countLines(fstream &stream) {
 
 double *ReadData::getData() {
     return dataArray;
+}
+
+int ReadData::numberInput() {
+    return numberLines - 1;
 }

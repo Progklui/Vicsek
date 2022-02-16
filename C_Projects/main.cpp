@@ -8,12 +8,24 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "ReadData.cpp"
+
 #include "nrutil.h"
 #include "Vicsek.h"
 
 #define PI 3.1415926
 
-int main (){
+int main (int argc, char *argv[]){
+    char *input = argv[1];
+    
+    ReadData *newRead = new ReadData(input);
+    
+    double *data = newRead->getData();
+    
+    for(int i = 0; i < newRead->numberInput(); i++) {
+    	printf("%lf\n", data[i]);
+    }
+
     // set parameters
     int n    = 30;
     int N    = n*n;
