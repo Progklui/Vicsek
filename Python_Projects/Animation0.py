@@ -13,7 +13,7 @@ thetaData = []
 pause = False
 
 # assign directory
-directory = '../simulation_results/N_1000_L_1.000000_v_0.030000_R_1.000000_D_0.100000/Neq_2000_Nsim_1000_dt_1.000000/'
+directory = '../simulation_results/N_900_L_1.000000_v_0.030000_R_0.500000_D_0.100000/Neq_2000_Nsim_1000_dt_1.000000/'
 
 t = np.linspace(1000, 100000, 100)
 t = np.linspace(10, 1000, 100)

@@ -89,7 +89,7 @@ class handle_input:
             time = input("Specify time: ")
             file_name = "/configuration_t_" + time
             print(" ")
-            return file_name, True
+            return file_name, time, True
         else:
             exit()
 

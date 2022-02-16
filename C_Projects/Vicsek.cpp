@@ -13,7 +13,7 @@
 Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, double v_init, double R_init, double dt_init, int Nsim_init, int Nsave_init, char * dir_name_init) {
     // constructur: make a system of N spheres in the cubic box
     // x in [-L/2,L/2]
-    // y in [-L/2,L/2
+    // y in [-L/2,L/2]
     dt       = dt_init;
     Nsim     = Nsim_init;
     Nsave    = Nsave_init;
@@ -23,7 +23,7 @@ Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, dou
     // with initial positions on a cubic lattice and L such that the
     // correct packing fraction phi is obtained
     N       = N_init;
-    n       = int (pow(N+0.000002,1./3));
+    n       = int(sqrt((double) N));
     sigma   = sigma_init;
     sigma2  = sigma*sigma;
 
@@ -73,7 +73,6 @@ Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, dou
         double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
         theta[index] = u1;
     }
-
     save_simulation_params();
 }
 
@@ -100,7 +99,12 @@ double Vicsek::calculate_mean_angle(int i) {
     int number_of_particles = 0;
 
     for (int j=0; j<N; j++) {
-        double r_ij_2 = (x[i]-x[j])*(x[i]-x[j]) + (y[i]-y[j])*(y[i]-y[j]);
+        double dx = x[i] - x[j];
+        double dy = y[i] - y[j];
+
+        pbc(dx, dy);
+
+        double r_ij_2 = dx*dx + dy*dy;
         if (r_ij_2 < R*R) {
             avg_angle += theta[j];
             number_of_particles += 1;
@@ -113,21 +117,24 @@ double Vicsek::calculate_mean_angle(int i) {
 void Vicsek::md_step_vicsek(double dt){
     // update the positions of all particles
     double diff_term = sqrt(2.*D_rot*dt);
+    double * avg_angle = dvector(0, N-1);
+
+    for (int i=0; i<N; i++) {
+        // calculate average orientation of nearby particles
+        avg_angle[i] = calculate_mean_angle(i);
+    }
     for (int i=0; i<N; i++) {
         // generate noise parameter
         double u1 = rand()/((double) RAND_MAX);
         double u2 = rand()/((double) RAND_MAX);
         double z1 = sqrt(-2.*log(u1))*cos(2.*PI*u2);
-        double z2 = sqrt(-2.*log(u1))*sin(2.*PI*u2);
-
-        // calculate average orientation of nearby particles
-        double avg_angle = calculate_mean_angle(i);
+        // double z2 = sqrt(-2.*log(u1))*sin(2.*PI*u2);
 
         //update positions
         x[i] = x[i] + v*cos(theta[i])*dt;
         y[i] = y[i] + v*sin(theta[i])*dt;
 
-        theta[i] = avg_angle + diff_term*z1;
+        theta[i] = avg_angle[i] + diff_term*z1;
 
         pbc(x[i], y[i]);
     }
@@ -194,7 +201,7 @@ void Vicsek::run_simulation() {
     buf.append(file_name);
     out = fopen(buf.c_str(), "w");
 
-    for (int i=1; i <= Nsim; i++) {
+    for (int i=0; i <= Nsim; i++) {
         md_step_vicsek(dt);
         if (i%Nsave == 0) {
             double va = calculate_va();
