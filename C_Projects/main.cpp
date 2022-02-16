@@ -17,12 +17,12 @@
 
 int main (int argc, char *argv[]){
     char *input = argv[1];
-    
+
     ReadData *newRead = new ReadData(input);
-    
+
     double *data = newRead->getData();
-    
-    for(int i = 0; i < newRead->numberInput(); i++) {
+
+    for (int i = 0; i < newRead->numberInput(); i++) {
     	printf("%lf\n", data[i]);
     }
 

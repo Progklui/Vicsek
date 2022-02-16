@@ -16,7 +16,7 @@ sys.path.append(path)
 
 class handle_input:
     def __init__(self):
-        self.file_path = "../Parameter/input.csv"
+        self.file_path = "input.csv"
         self.folder_pa = "N_"
         self.N         = 1
         self.L         = 1
@@ -46,7 +46,7 @@ class handle_input:
         except:
             pass
 
-        params     = np.array(pd.read_csv(self.file_path, usecols=[1], delimiter=";"))[:, -1] # np.loadtxt(self.file_path, delimiter=';', skiprows=1).T
+        params     = np.array(pd.read_csv("../Parameter/"+self.file_path, usecols=[1], delimiter=";"))[:, -1] # np.loadtxt(self.file_path, delimiter=';', skiprows=1).T
 
         self.N     = params[0]
         self.L     = params[1]
@@ -64,7 +64,7 @@ class handle_input:
 
         print(" ")
         print("Verify input:")
-        print("Paramter file: ", self.file_path)
+        print("Paramter file: ", "../Parameter/"+self.file_path)
         print("Folder path  : ", self.folder_pa)
         print(" ")
         print("N     =        ", self.N)
@@ -103,3 +103,7 @@ class handle_input:
             return False
         else:
             exit()
+
+    def get_intervall_rate(self):
+        intervall_rate = input("Intervall = ")
+        return int(intervall_rate)
