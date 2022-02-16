@@ -27,8 +27,8 @@ int main (int argc, char *argv[]){
     }
 
     // set parameters
-    int n    = 10;
-    int N    = n*n*n;
+    int n    = 30;
+    int N    = n*n;
     double L = 1.;
 
     double sigma = 1.0;
@@ -36,7 +36,7 @@ int main (int argc, char *argv[]){
 
     double D_rot = 0.1;
     double v     = 0.03;
-    double R     = 1.;
+    double R     = 0.5;
 
     //simulation parameters
     double dt = 1.; // 0.0001; //time-step length
@@ -58,7 +58,7 @@ int main (int argc, char *argv[]){
     class Vicsek *system;
     system = new Vicsek(sigma, N, phi, D_rot, v, R, dt, Nsim, Nsave, &dir_name[0]);
 
-    system->md_equilibration(Neq); // Equilibration
+    // system->md_equilibration(Neq); // Equilibration
     system->run_simulation(); // Simulation
 
     return 0;

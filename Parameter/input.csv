@@ -1,8 +1,8 @@
 Parameter;Value
-NumberParticles;1000
+NumberParticles;900
 Length;1.000000
 TimeStep;1.000000
-Radius;1.000000
+Radius;0.010000
 Speed;0.030000
 eta;0.100000
 Nsim;1000
