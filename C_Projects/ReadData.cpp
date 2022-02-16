@@ -21,7 +21,7 @@ public:
         newfile.open("../Parameter/" + file, ios::in);
 
         this->numberLines = countLines(newfile);
-
+        
         this->dataArray = new double[numberLines - 1];
 
         if (newfile.is_open()) {
@@ -31,6 +31,7 @@ public:
                 if (i == 0) {
                     continue;
                 }
+                
                 std::stringstream temp(tp);
                 std::string segment;
                 std::vector<std::string> seglist;

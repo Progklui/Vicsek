@@ -8,7 +8,7 @@ class Vicsek {
 
         void md_step_vicsek(double);
         void md_equilibration(int);
-        void run_simulation();
+        void run_simulation(bool);
 
     private:
         double dt;

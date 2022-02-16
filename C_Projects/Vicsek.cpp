@@ -190,7 +190,7 @@ void Vicsek::store_configuration(double t) {
     fclose(out);
 }
 
-void Vicsek::run_simulation() {
+void Vicsek::run_simulation(bool b) {
     // start of the simulation
     char * file_name = "/2_simulation.out";
 
@@ -200,15 +200,30 @@ void Vicsek::run_simulation() {
     std::string buf(dir_name);
     buf.append(file_name);
     out = fopen(buf.c_str(), "w");
-
-    for (int i=0; i <= Nsim; i++) {
+    
+    if(b == false) {
+    	for (int i=0; i <= Nsim; i++) {
         md_step_vicsek(dt);
         if (i%Nsave == 0) {
             double va = calculate_va();
             printf(" t = %f, va = %f \n", i*dt, va);
             fprintf(out, "%f %f\n", i*dt, va);
-            store_configuration(i*dt);
-        }
+            
+        	}
+    	}
+    }
+    
+    else {
+
+	    for (int i=0; i <= Nsim; i++) {
+		md_step_vicsek(dt);
+		if (i%Nsave == 0) {
+		    double va = calculate_va();
+		    printf(" t = %f, va = %f \n", i*dt, va);
+		    fprintf(out, "%f %f\n", i*dt, va);
+		    store_configuration(i*dt);
+		}
+	    }
     }
     fclose(out);
     printf(" Simulation done! \n\n");
