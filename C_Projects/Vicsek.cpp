@@ -24,8 +24,8 @@ Vicsek::Vicsek(double L_init, int N_init, double D_rot_init, double v_init, doub
 
     // with initial positions on a cubic lattice and L such that the
     // correct packing fraction phi is obtained
-    N       = N_init;
-    n       = int(sqrt((double) N));
+    n       = N_init; // int(sqrt((double) N));
+    N       = n*n;
 
     D_rot   = D_rot_init;
     v       = v_init;
@@ -119,7 +119,7 @@ void Vicsek::md_step_vicsek(double dt){
         else if(theta[i] > 0) {
         	theta[i] -= numberPi * 2 * PI;
         }
-        
+
         pbc(x[i], y[i]);
     }
 }
