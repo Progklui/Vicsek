@@ -10,10 +10,12 @@
 
 #define PI 3.1415926
 
-Vicsek::Vicsek(int N_init, double D_rot_init, double v_init, double R_init, double dt_init, int Nsim_init, int Nsave_init, char * dir_name_init, int init) {
+Vicsek::Vicsek(double L_init, int N_init, double D_rot_init, double v_init, double R_init, double dt_init, int Nsim_init, int Nsave_init, char * dir_name_init, int init) {
     // constructur: make a system of N spheres in the cubic box
     // x in [-L/2,L/2]
     // y in [-L/2,L/2]
+    L        = L_init;
+
     dt       = dt_init;
     Nsim     = Nsim_init;
     Nsave    = Nsave_init;
@@ -37,18 +39,18 @@ Vicsek::Vicsek(int N_init, double D_rot_init, double v_init, double R_init, doub
     y_init = dvector(0,N-1);
 
     theta = dvector(0,N-1);
-    
+
     if(init == 1) {
     	printf("\nUniform initialisation.\n\n");
     	init_uniform();
     }
-    
+
     else {
     	printf("\nRandom initialisation.\n\n");
     	init_random();
     }
 
-    
+
     save_simulation_params();
 }
 
@@ -102,6 +104,22 @@ void Vicsek::md_step_vicsek(double dt){
 
         theta[i] = avg_angle[i] + diff_term*z1;
 
+        double toRound = theta[i] / (2 * PI);
+
+        if(toRound < 0) {
+        	toRound = - toRound;
+        }
+
+        int numberPi = ceil(toRound);
+
+        if(theta[i] < 0) {
+        	theta[i] += numberPi * 2 * PI;
+        }
+
+        else if(theta[i] > 0) {
+        	theta[i] -= numberPi * 2 * PI;
+        }
+        
         pbc(x[i], y[i]);
     }
 }
@@ -169,26 +187,23 @@ void Vicsek::run_simulation(bool b) {
 
     if(b == false) {
     	for (int i=0; i <= Nsim; i++) {
-        md_step_vicsek(dt);
         if (i%Nsave == 0) {
             double va = calculate_va();
             printf(" t = %f, va = %f \n", i*dt, va);
             fprintf(out, "%f %f\n", i*dt, va);
-
-        	}
+        }
+        md_step_vicsek(dt);
     	}
     }
-
     else {
-
 	    for (int i=0; i <= Nsim; i++) {
-		md_step_vicsek(dt);
-		if (i%Nsave == 0) {
-		    double va = calculate_va();
-		    printf(" t = %f, va = %f \n", i*dt, va);
-		    fprintf(out, "%f %f\n", i*dt, va);
-		    store_configuration(i*dt);
-		}
+		      if (i%Nsave == 0) {
+		          double va = calculate_va();
+		          printf(" t = %f, va = %f \n", i*dt, va);
+		          fprintf(out, "%f %f\n", i*dt, va);
+		          store_configuration(i*dt);
+		      }
+        md_step_vicsek(dt);
 	    }
     }
     fclose(out);
@@ -240,10 +255,10 @@ void Vicsek::init_uniform() {
     }
 
     // rescale the system to match the packing fraction
-    for (int index = 0; index<N; index++){
-        x[index] = (x[index] * L) / n;
-        y[index] = (y[index] * L) / n;
-        
+    for (int index = 0; index<N; index++) {
+        x[index] = (x[index] * L) / (double) n;
+        y[index] = (y[index] * L) / (double) n;
+
         double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
         theta[index] = u1;
     }
@@ -275,9 +290,9 @@ void Vicsek::init_random() {
 
     // rescale the system to match the packing fraction
     for (int index = 0; index<N; index++){
-        x[index] = (x[index] * L) / n;
-        y[index] = (y[index] * L) / n;
-        
+        // x[index] = (x[index] * L) / n;
+        // y[index] = (y[index] * L) / n;
+
         double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
         theta[index] = u1;
     }

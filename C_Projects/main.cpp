@@ -22,7 +22,7 @@ int main (int argc, char *argv[]){
     	printf("Specify arguments: %s <String>\n", argv[0]);
     	exit(1);
     }
-    
+
     char *input = argv[1];
 
     ReadData *newRead = new ReadData(input);
@@ -64,7 +64,7 @@ int main (int argc, char *argv[]){
     int Neq   = data[16]; // equilibration time
     int Nsim  = data[14]; // simulation time
     int Nsave = data[15]; // how often printed
-    
+
 
     printf("Save Config: %s\n", config ? "true" : "false");
 
@@ -84,7 +84,7 @@ int main (int argc, char *argv[]){
 
 			    // create the class and the initial configuration
 			    class Vicsek *system;
-			    system = new Vicsek(N, D_rotArr[rD], vArr[vN], RArr[rN], dt, Nsim, Nsave, &dir_name[0], init);
+			    system = new Vicsek(L, N, D_rotArr[rD], vArr[vN], RArr[rN], dt, Nsim, Nsave, &dir_name[0], init);
 
 			    system->md_equilibration(Neq); // Equilibration
 			    system->run_simulation(config); // Simulation

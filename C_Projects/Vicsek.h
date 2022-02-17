@@ -1,6 +1,6 @@
 class Vicsek {
     public:
-	      Vicsek(int, double, double, double, double, int, int, char *, int);
+	      Vicsek(double, int, double, double, double, double, int, int, char *, int);
 
         double calculate_va();
 

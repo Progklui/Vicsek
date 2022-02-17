@@ -73,6 +73,9 @@ for folder_path in o_folder_path:
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
+    ax.set_xlim(-input_object.L/2, input_object.L/2)
+    ax.set_ylim(-input_object.L/2, input_object.L/2)
+
     fig.canvas.mpl_connect('button_press_event', onClick)
     animator = ani.FuncAnimation(fig, update, frames=range(len(xData)), interval=intervall_rate)
 
