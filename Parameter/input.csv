@@ -17,3 +17,4 @@ Nsim;1500
 Nsave;10
 Neq;2000
 printconfig;1
+init;1
