@@ -10,7 +10,7 @@
 
 #define PI 3.1415926
 
-Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, double v_init, double R_init, double dt_init, int Nsim_init, int Nsave_init, char * dir_name_init) {
+Vicsek::Vicsek(int N_init, double D_rot_init, double v_init, double R_init, double dt_init, int Nsim_init, int Nsave_init, char * dir_name_init, int init) {
     // constructur: make a system of N spheres in the cubic box
     // x in [-L/2,L/2]
     // y in [-L/2,L/2]
@@ -24,8 +24,6 @@ Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, dou
     // correct packing fraction phi is obtained
     N       = N_init;
     n       = int(sqrt((double) N));
-    sigma   = sigma_init;
-    sigma2  = sigma*sigma;
 
     D_rot   = D_rot_init;
     v       = v_init;
@@ -39,40 +37,18 @@ Vicsek::Vicsek(double sigma_init, int N_init, double phi, double D_rot_init, dou
     y_init = dvector(0,N-1);
 
     theta = dvector(0,N-1);
-
-    // set initial positions and calculate the center of mass
-    double cmx = 0.;
-    double cmy = 0.;
-
-    for (int i = 0; i<n; i++) {
-        for (int j = 0; j<n; j++) {
-	          int index = i+j*n;
-
-            x[index] = i*sigma;
-	          cmx += x[index];
-
-            y[index] = j*sigma;
-	          cmy += y[index];
-	      }
+    
+    if(init == 1) {
+    	printf("\nUniform initialisation.\n\n");
+    	init_uniform();
     }
-    cmx = cmx/N;
-    cmy = cmy/N;
-
-    for (int index = 0; index<N; index++) {
-        x[index] -= cmx;
-        y[index] -= cmy;
+    
+    else {
+    	printf("\nRandom initialisation.\n\n");
+    	init_random();
     }
 
-    // rescale the system to match the packing fraction
-    double Lo = n*sigma;
-    L = pow(N*PI*sigma*sigma*sigma/6/phi,1./3);
-    for (int index = 0; index<N; index++){
-        x[index] = x[index]*L/Lo;
-        y[index] = y[index]*L/Lo;
-
-        double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
-        theta[index] = u1;
-    }
+    
     save_simulation_params();
 }
 
@@ -82,16 +58,6 @@ void Vicsek::pbc(double &x, double &y) {
     if (x < -L/2.0) x += L;
     if (y >= L/2.0) y -= L;
     if (y < -L/2.0) y += L;
-}
-
-double Vicsek::get_size() {
-    // return the size of the system
-    return L;
-}
-
-double Vicsek::get_packing_fraction() {
-    // return the size of the system
-    return N*PI*sigma*sigma*sigma/6./(L*L);
 }
 
 double Vicsek::calculate_mean_angle(int i) {
@@ -247,4 +213,72 @@ void Vicsek::save_simulation_params() {
     fprintf(out, "Nsav, %i\n", Nsave);
 
     fclose(out);
+}
+
+void Vicsek::init_uniform() {
+    // set initial positions and calculate the center of mass
+    double cmx = 0.;
+    double cmy = 0.;
+
+    for (int i = 0; i<n; i++) {
+        for (int j = 0; j<n; j++) {
+	          int index = i+j*n;
+
+            x[index] = i;
+	          cmx += x[index];
+
+            y[index] = j;
+	          cmy += y[index];
+	      }
+    }
+    cmx = cmx/N;
+    cmy = cmy/N;
+
+    for (int index = 0; index<N; index++) {
+        x[index] -= cmx;
+        y[index] -= cmy;
+    }
+
+    // rescale the system to match the packing fraction
+    for (int index = 0; index<N; index++){
+        x[index] = (x[index] * L) / n;
+        y[index] = (y[index] * L) / n;
+        
+        double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
+        theta[index] = u1;
+    }
+}
+
+void Vicsek::init_random() {
+    // set initial positions and calculate the center of mass
+    double cmx = 0.;
+    double cmy = 0.;
+
+    for (int i = 0; i<n; i++) {
+        for (int j = 0; j<n; j++) {
+	          int index = i+j*n;
+
+            x[index] = L * (rand()/((double) RAND_MAX));
+	          cmx += x[index];
+
+            y[index] = L * (rand()/((double) RAND_MAX));
+	          cmy += y[index];
+	      }
+    }
+    cmx = cmx/N;
+    cmy = cmy/N;
+
+    for (int index = 0; index<N; index++) {
+        x[index] -= cmx;
+        y[index] -= cmy;
+    }
+
+    // rescale the system to match the packing fraction
+    for (int index = 0; index<N; index++){
+        x[index] = (x[index] * L) / n;
+        y[index] = (y[index] * L) / n;
+        
+        double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
+        theta[index] = u1;
+    }
 }
