@@ -200,7 +200,7 @@ void Vicsek::run_simulation(bool b) {
     std::string buf(dir_name);
     buf.append(file_name);
     out = fopen(buf.c_str(), "w");
-    
+
     if(b == false) {
     	for (int i=0; i <= Nsim; i++) {
         md_step_vicsek(dt);
@@ -208,11 +208,11 @@ void Vicsek::run_simulation(bool b) {
             double va = calculate_va();
             printf(" t = %f, va = %f \n", i*dt, va);
             fprintf(out, "%f %f\n", i*dt, va);
-            
+
         	}
     	}
     }
-    
+
     else {
 
 	    for (int i=0; i <= Nsim; i++) {
