@@ -43,11 +43,11 @@ for folder_path in o_folder_path:
     if print_traj == True:
         equi_trajectory = plot.without_fit_one_data_line(x=equilibration[0], y=equilibration[1],
                                                          x_label="time", y_label=r"$v_a$", data_label="equilibration")
-        equi_trajectory.scatter(image_name=folder_path + "/1_equilibration_trajectory", set_grid=True, set_legend=True)
+        equi_trajectory.no_scatter(image_name=folder_path + "/1_equilibration_trajectory", set_grid=False, set_legend=True)
 
         sim_trajectory = plot.without_fit_one_data_line(x=simulation[0], y=simulation[1],
                                                         x_label="time", y_label=r"$v_a$", data_label="simulation")
-        sim_trajectory.scatter(image_name=folder_path + "/2_simulation_trajectory", set_grid=True, set_legend=True)
+        sim_trajectory.no_scatter(image_name=folder_path + "/2_simulation_trajectory", set_grid=False, set_legend=True)
 
     cont = True
     while cont == True:

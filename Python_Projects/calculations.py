@@ -83,7 +83,7 @@ class handle_input:
         print(" ")
         print("Verify input:")
         print("Parameter file:", "../Parameter/"+self.file_path)
-        print("Folder path  : ", self.folder_pa)
+        print("Folder path   :", self.folder_pa)
         print(" ")
         print("N     =        ", self.N_1, "-", self.N_2, ", step size: ", self.N_inc)
         print("L     =        ", self.L)
@@ -158,6 +158,23 @@ class handle_input:
             return False
         else:
             exit()
+
+    def get_phase_parameters(self):
+        dimension = input("Specify dimension of transition analysis (1D/2D): ")
+        if dimension == "1D":
+            parameter = input("Specify parameter (rho/eta/r): ")
+            print(" ")
+            choice    = input("Is there another varying parameter (y/n)? ")
+            if choice == "y" or choice == "yes":
+                print(" ")
+                other_param = input("Specify other parameter (rho/eta/r): ")
+                return "1D+", parameter, other_param
+            elif choice == "n" or choice == "no":
+                return "1D", parameter, parameter
+        elif dimension == "2D":
+            parameter_1 = input("Specify first parameter (rho/eta/r): ")
+            parameter_2 = input("Specify second parameter (rho/eta/r): ")
+            return "2D", parameter_1, parameter_2
 
     def get_intervall_rate(self):
         intervall_rate = input("Intervall = ")
