@@ -172,6 +172,7 @@ class handle_input:
             elif choice == "n" or choice == "no":
                 return "1D", parameter, parameter
         elif dimension == "2D":
+            print(" ")
             parameter_1 = input("Specify first parameter (rho/eta/r): ")
             parameter_2 = input("Specify second parameter (rho/eta/r): ")
             return "2D", parameter_1, parameter_2
