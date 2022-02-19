@@ -256,8 +256,8 @@ void Vicsek::init_uniform() {
 
     // rescale the system to match the packing fraction
     for (int index = 0; index<N; index++) {
-        x[index] = (x[index] * L) / (double) n;
-        y[index] = (y[index] * L) / (double) n;
+        x[index] = (x[index] * L) / ((double) n - 1.);
+        y[index] = (y[index] * L) / ((double) n - 1.);
 
         double u1 = 2*PI*(rand()/((double) RAND_MAX)); // rand()/((double) 2*PI);
         theta[index] = u1;

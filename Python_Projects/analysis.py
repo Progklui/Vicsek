@@ -56,9 +56,11 @@ for folder_path in o_folder_path:
         if cont == False:
             break
 
-        x     = np.array(pd.read_csv(folder_path + config_file_name, usecols=[0], delimiter=" "))[:, -1]
-        y     = np.array(pd.read_csv(folder_path + config_file_name, usecols=[1], delimiter=" "))[:, -1]
-        theta = np.array(pd.read_csv(folder_path + config_file_name, usecols=[2], delimiter=" "))[:, -1]
+        data  = np.loadtxt(folder_path+config_file_name, delimiter=' ').T
+
+        x     = data[0] # np.array(pd.read_csv(folder_path + config_file_name, usecols=[0], delimiter=" "))[:, -1]
+        y     = data[1] # np.array(pd.read_csv(folder_path + config_file_name, usecols=[1], delimiter=" "))[:, -1]
+        theta = data[2] # np.array(pd.read_csv(folder_path + config_file_name, usecols=[2], delimiter=" "))[:, -1]
 
         config_object = plot.configuration(x=x, y=y, theta=theta, x_label=r"x", y_label=r"y", data_label=r"test")
         config_object.plot(image_name=folder_path + "/t_" + str(time), set_grid=False, set_legend=True)

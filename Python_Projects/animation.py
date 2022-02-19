@@ -57,9 +57,15 @@ for folder_path in o_folder_path:
 
     t = np.linspace(0, int(input_object.dt*input_object.Nsim), int(input_object.Nsim/input_object.Nsave)+1)
     for i in t:
-        x     = np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[0], delimiter=" "))[:, -1]
-        y     = np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[1], delimiter=" "))[:, -1]
-        theta = np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[2], delimiter=" "))[:, -1]
+        data  = np.loadtxt(folder_path+config_file_name, delimiter=' ').T
+
+        x     = data[0] # np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[0], delimiter=" "))[:, -1]
+        y     = data[1] # np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[1], delimiter=" "))[:, -1]
+        theta = data[2] # np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[2], delimiter=" "))[:, -1]
+
+        # x     = np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[0], delimiter=" "))[:, -1]
+        # y     = np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[1], delimiter=" "))[:, -1]
+        # theta = np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[2], delimiter=" "))[:, -1]
 
         xData.append(x)
         yData.append(y)
