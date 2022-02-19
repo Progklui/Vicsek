@@ -95,6 +95,32 @@ class phase_analysis:
         plt.savefig(image_name+".png", dpi=800)
         plt.show()
 
+    def plot_2D_phases(self, z_data, param_label, image_name, set_grid, set_legend):
+        fig = plt.figure()
+        ax = plt.subplot(111)
+
+        X, Y = np.meshgrid(self.x, self.y)
+        CS = ax.contourf(X, Y, z_data, cmap=plt.cm.get_cmap('viridis', 45), levels=np.arange(0.0,1.0001,0.025).tolist()) #[0.0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1.0])
+
+        cbar = fig.colorbar(CS)
+        cbar.ax.set_ylabel(r"$v_a$")
+
+        plt.title(self.plot_label)
+
+        plt.xlabel(self.x_label)
+        plt.ylabel(self.y_label)
+
+        plt.ticklabel_format(axis="x", style="sci", scilimits=(0,0))
+        plt.ticklabel_format(axis="y", style="sci", scilimits=(0,0))
+
+        if set_grid:
+            plt.grid()
+        if set_legend:
+            plt.legend(loc="upper right")
+
+        plt.savefig(image_name+".png", dpi=800)
+        plt.show()
+
 class without_fit_one_data_line:
     def __init__(self, x, y, x_label, y_label, data_label):
         self.x          = x
