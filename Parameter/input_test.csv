@@ -1,6 +1,6 @@
 Parameter;Value
-NumberParticlesInit;900
-NumberParticlesEnd;901
+NumberParticlesInit;30
+NumberParticlesEnd;31
 NumberParticlesIncr;1
 Length;1.000000
 TimeStep;1.000000
@@ -13,8 +13,8 @@ SpeedIncr;0.010000
 etaInit;0.100000
 etaEnd;0.200000
 etaIncr;0.100000
-Nsim;1500
-Nsave;3
-Neq;0
-printconfig;1
+Nsim;15000
+Nsave;5
+Neq;100
+printconfig;0
 init;1

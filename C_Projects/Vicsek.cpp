@@ -62,6 +62,14 @@ void Vicsek::pbc(double &x, double &y) {
     if (y < -L/2.0) y += L;
 }
 
+void Vicsek::rbc(double &x, double &y) {
+    // apply periodic boundary conditions
+    if (x >= L/2.0) x = -x;
+    if (x < -L/2.0) x = -x;
+    if (y >= L/2.0) y = -y;
+    if (y < -L/2.0) y = -y;
+}
+
 double Vicsek::calculate_mean_angle(int i) {
     double avg_angle = 0.;
     int number_of_particles = 0;
@@ -73,13 +81,27 @@ double Vicsek::calculate_mean_angle(int i) {
         pbc(dx, dy);
 
         double r_ij_2 = dx*dx + dy*dy;
-        if (r_ij_2 < R*R) {
+        if (r_ij_2 < R*R) { // && phi < 0.5*phi_vision) {
             avg_angle += theta[j];
             number_of_particles += 1;
         }
     }
     avg_angle = avg_angle/number_of_particles;
     return avg_angle;
+}
+
+double Vicsek::check_vision(int i, int j) {
+    double dx = x[i] - x[j];
+    double dy = y[i] - y[j];
+
+    pbc(dx, dy);
+
+    double r_ij = sqrt(dx*dx + dy*dy);
+    double scalar_prod = dx*cos(theta[i]) + dy*sin(theta[i]);
+
+    double phi = arccos(scalar_prod/r_ij);
+
+    return phi;
 }
 
 void Vicsek::md_step_vicsek(double dt){
@@ -123,6 +145,8 @@ void Vicsek::md_step_vicsek(double dt){
         pbc(x[i], y[i]);
     }
 }
+
+
 
 double Vicsek::calculate_va() {
     // calculate normalized average velocity

@@ -20,6 +20,8 @@ class Vicsek {
         double v; // magnitude of the velocity of each particle
         double R; // radius that is taken into account to calculate angle
 
+        double phi_vision;
+
         // positions x,y,z
         double * x;
         double * y;
@@ -34,9 +36,11 @@ class Vicsek {
 
         // private functions
         void pbc(double &x, double &y);
+        void rbc(double &x, double &y);
         double calculate_mean_angle(int);
         void store_configuration(double);
         void save_simulation_params();
         void init_uniform();
         void init_random();
+        void check_vision(int, int);
 };

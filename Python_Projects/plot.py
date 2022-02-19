@@ -14,6 +14,9 @@ sys.path.append(path)
 import numpy as np
 import matplotlib.pyplot as plt
 
+from uncertainties import ufloat
+from uncertainties import unumpy
+
 # ┌─────────────┐
 # │ Without Fit │
 # └─────────────┘
@@ -99,7 +102,7 @@ class phase_analysis:
         fig = plt.figure()
         ax = plt.subplot(111)
 
-        X, Y = np.meshgrid(self.x, self.y)
+        X, Y = np.meshgrid((2*self.x)**0.5, self.y)
         CS = ax.contourf(X, Y, z_data, cmap=plt.cm.get_cmap('viridis', 45), levels=np.arange(0.0,1.0001,0.025).tolist()) #[0.0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1.0])
 
         cbar = fig.colorbar(CS)
@@ -138,6 +141,9 @@ class without_fit_one_data_line:
         plt.ticklabel_format(axis="x", style="sci", scilimits=(0,0))
         plt.ticklabel_format(axis="y", style="sci", scilimits=(0,0))
 
+        plt.ylim(ymin=0, ymax=1.1)
+        plt.axhline(y=1, color="grey", linestyle="dashed", linewidth=1)
+
         if set_grid:
             plt.grid()
         if set_legend:
@@ -150,7 +156,7 @@ class without_fit_one_data_line:
         fig= plt.figure()
         ax = plt.subplot()
 
-        plt.plot(self.x, self.y, label=self.data_label)
+        plt.plot((self.x)**0.5, self.y, label=self.data_label)
 
         plt.xlabel(self.x_label)
         plt.ylabel(self.y_label)
@@ -164,7 +170,7 @@ class without_fit_one_data_line:
         if set_grid:
             plt.grid()
         if set_legend:
-            plt.legend()
+            plt.legend(loc="upper right")
 
         plt.savefig(image_name+".png", dpi=800)
         plt.show()
@@ -175,13 +181,18 @@ class without_fit_one_data_line:
         plt.xlabel(self.x_label)
         plt.ylabel(self.y_label)
 
+        plt.ylim(ymin=0, ymax=1.1)
+        plt.axhline(y=1, color="grey", linestyle="dashed", linewidth=1)
+
+        plt.axhline(y=np.mean(self.y), color="red", linestyle="dashed", linewidth=1, label=r"$\overline{v}_a = $"+str(round(np.mean(self.y),3)) +",\n" + r"$\sigma(v_a) = $" + str(round(np.std(self.y, ddof=1),3)))
+
         plt.ticklabel_format(axis="x", style="sci", scilimits=(0,0))
         plt.ticklabel_format(axis="y", style="sci", scilimits=(0,0))
 
         if set_grid:
             plt.grid()
         if set_legend:
-            plt.legend()
+            plt.legend(loc="upper right")
 
         plt.savefig(image_name+".png", dpi=800)
         plt.show()
