@@ -173,7 +173,7 @@ elif dim == "1D+":
 
         elif param_2 == "r":
             R = float(param_2_values_str[i])
-            param_array.append(D_rot)
+            param_array.append(R)
             param_label = r"$R$"
             if param_1 == "rho":
                 N_array     = np.arange(input_object.N_1, input_object.N_2, input_object.N_inc)

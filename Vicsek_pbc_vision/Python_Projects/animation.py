@@ -57,6 +57,7 @@ for folder_path in o_folder_path:
 
     t = np.linspace(0, int(input_object.dt*input_object.Nsim), int(input_object.Nsim/input_object.Nsave)+1)
     for i in t:
+        config_file_name = "/configuration_t_{0}00000".format(i)
         data  = np.loadtxt(folder_path+config_file_name, delimiter=' ').T
 
         x     = data[0] # np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[0], delimiter=" "))[:, -1]

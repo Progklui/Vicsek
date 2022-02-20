@@ -37,10 +37,11 @@ class Vicsek {
         // private functions
         void pbc(double &x, double &y);
         void rbc(double &x, double &y);
+        void rbc_theta(double x, double y, double &theta);
         double calculate_mean_angle(int);
         void store_configuration(double);
         void save_simulation_params();
         void init_uniform();
         void init_random();
-        void check_vision(int, int);
+        double check_vision(int, int);
 };

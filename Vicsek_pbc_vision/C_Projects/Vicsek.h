@@ -42,5 +42,5 @@ class Vicsek {
         void save_simulation_params();
         void init_uniform();
         void init_random();
-        void check_vision(int, int);
+        double check_vision(int, int);
 };

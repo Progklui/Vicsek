@@ -51,7 +51,6 @@ Vicsek::Vicsek(double L_init, int N_init, double D_rot_init, double v_init, doub
     	init_random();
     }
 
-
     save_simulation_params();
 }
 
@@ -82,9 +81,14 @@ double Vicsek::calculate_mean_angle(int i) {
         pbc(dx, dy);
 
         double r_ij_2 = dx*dx + dy*dy;
-        if (r_ij_2 < R*R) && phi < 0.5*phi_vision) {
-            avg_angle += theta[j];
-            number_of_particles += 1;
+        if (r_ij_2 < R*R) {
+            double phi = check_vision(i, j);
+            // printf("phi = %f\n", phi_vision);
+            if (phi < 0.5*phi_vision) {
+                avg_angle += theta[j];
+                number_of_particles += 1;
+                // printf("here\n");
+            }
         }
     }
     avg_angle = avg_angle/number_of_particles;
@@ -100,8 +104,11 @@ double Vicsek::check_vision(int i, int j) {
     double r_ij = sqrt(dx*dx + dy*dy);
     double scalar_prod = dx*cos(theta[i]) + dy*sin(theta[i]);
 
-    double phi = arccos(scalar_prod/r_ij);
-
+    double phi = 0;
+    if (r_ij > 0) {
+        phi = acos(scalar_prod/r_ij);
+    }
+    //printf("phi_2 = %f\n", phi);
     return phi;
 }
 
