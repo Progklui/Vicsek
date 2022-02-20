@@ -99,7 +99,7 @@ double Vicsek::check_vision(int i, int j) {
     double r_ij = sqrt(dx*dx + dy*dy);
     double scalar_prod = dx*cos(theta[i]) + dy*sin(theta[i]);
 
-    double phi = arccos(scalar_prod/r_ij);
+    double phi = acos(scalar_prod/r_ij);
 
     return phi;
 }
