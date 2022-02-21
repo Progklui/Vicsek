@@ -108,7 +108,7 @@ double Vicsek::check_vision(int i, int j) {
     double dx = x[i] - x[j];
     double dy = y[i] - y[j];
 
-    rbc(dx, dy);
+    // rbc(dx, dy);
 
     double r_ij = sqrt(dx*dx + dy*dy);
     double scalar_prod = dx*cos(theta[i]) + dy*sin(theta[i]);
