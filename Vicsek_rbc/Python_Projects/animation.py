@@ -39,6 +39,9 @@ def update(frame):
         ax.set_xticks([])
         ax.set_yticks([])
 
+        ax.set_xlim(-1.05*input_object.L/2, 1.05*input_object.L/2)
+        ax.set_ylim(-1.05*input_object.L/2, 1.05*input_object.L/2)
+
 # ┌───────────┐
 # │ Read data │
 # └───────────┘
@@ -87,7 +90,7 @@ for folder_path in o_folder_path:
     animator = ani.FuncAnimation(fig, update, frames=range(len(xData)), interval=intervall_rate)
 
     file_name = folder_path + r"/animation.mp4"
-    writervideo = ani.FFMpegWriter(fps=15)
+    writervideo = ani.FFMpegWriter(fps=10)
     animator.save(file_name, writer=writervideo)
 
     plt.show()
