@@ -60,7 +60,8 @@ if dim == "1D":
 
     if param_1 == "eta":
         x_data   = np.arange(input_object.D_rot_1, input_object.D_rot_2, input_object.D_rot_inc)
-        x_lab    = r"$D_{rot}$"
+        x_data   = (2*x_data*input_object.dt)**0.5
+        x_lab    = r"$\sqrt{2D_{rot}\Delta t}$"
         data_lab = r"$\rho = $" + str(input_object.N_1*input_object.N_1/(input_object.L*input_object.L)) + r", $R = $" + str(input_object.R_1) + r", $v_a = $" + str(input_object.v_1)
         path     = "../simulation_results/1_phase_transitions/eta_transitions/"
         make_dir_if_not_exists(path)
@@ -68,7 +69,7 @@ if dim == "1D":
     elif param_1 == "rho":
         x_data   = np.arange(input_object.N_1, input_object.N_2, input_object.N_inc)
         x_data   = x_data*x_data/(input_object.L*input_object.L)
-        x_lab    = r"$N$"
+        x_lab    = r"$\rho$"
         data_lab = r"$D_{rot} = $" + str(input_object.D_rot_1) + r", $R = $" + str(input_object.R_1) + r", $v_a = $" + str(input_object.v_1)
         path     = "../simulation_results/1_phase_transitions/rho_transition/"
         make_dir_if_not_exists(path)
@@ -83,6 +84,7 @@ if dim == "1D":
 
     phase_1D = plot.without_fit_one_data_line(x=x_data, y=va_mean_array, x_label=x_lab, y_label=r"$v_a$", data_label=data_lab)
     phase_1D.plot_phase(image_name=path + img_name, set_grid=False, set_legend=True)
+
 elif dim == "1D+":
     param_2_values_str = input("Specify values (e. g. 1.34, 2.1): ").split(",")
     # param_2_folders    = [] # np.zeros(len(param_2_values_str))
@@ -130,8 +132,9 @@ elif dim == "1D+":
                 plot_label = r"$\rho = $" + str(input_object.N_1*input_object.N_1/(input_object.L*input_object.L)) + r", $v = $" + str(input_object.v_1)
 
         elif param_2 == "rho":
-            rho = float(param_2_values_str[i])
-            param_array.append(rho)
+            rho      = float(param_2_values_str[i])
+            rho_save = rho*rho
+            param_array.append(rho_save)
             param_label = r"$\rho$"
             if param_1 == "eta":
                 D_rot_array  = np.arange(input_object.D_rot_1, input_object.D_rot_2, input_object.D_rot_inc)
@@ -142,7 +145,8 @@ elif dim == "1D+":
                 va_array.append(va_mean_array)
 
                 x_array = D_rot_array
-                x_label = r"$D_{rot}$"
+                x_array = (2*x_array*input_object.dt)**0.5
+                x_label = r"$\sqrt{2D_{rot}\Delta t}$"
 
                 path     = "../simulation_results/1_phase_transitions/eta_transitions/"
                 make_dir_if_not_exists(path)
@@ -169,7 +173,7 @@ elif dim == "1D+":
 
         elif param_2 == "r":
             R = float(param_2_values_str[i])
-            param_array.append(D_rot)
+            param_array.append(R)
             param_label = r"$R$"
             if param_1 == "rho":
                 N_array     = np.arange(input_object.N_1, input_object.N_2, input_object.N_inc)
@@ -197,7 +201,8 @@ elif dim == "1D+":
                 va_array.append(va_mean_array)
 
                 x_array = D_rot_array
-                x_label = r"$D_{rot}$"
+                x_array = (2*x_array*input_object.dt)**0.5
+                x_label = r"$\sqrt{2D_{rot}\Delta t}$"
 
                 path     = "../simulation_results/1_phase_transitions/eta_transitions/"
                 make_dir_if_not_exists(path)
@@ -215,11 +220,11 @@ elif dim == "2D":
     va_array = []
     if param_1 == "rho":
         x_label = r"$\rho$"
-        N_array      = np.arange(input_object.N_1, input_object.N_2, input_object.N_inc)
-        x_data = N_array*N_array/(input_object.L*input_object.L)
+        N_array = np.arange(input_object.N_1, input_object.N_2, input_object.N_inc)
+        x_data  = N_array*N_array/(input_object.L*input_object.L)
         for N in N_array:
             if param_2 == "eta":
-                y_label = r"$D_{rot}$"
+                y_label    = r"$\sqrt{2D_{rot}\Delta t}$"
                 plot_label = r"$R = $" + str(input_object.R_1) + r", $v_a = $" + str(input_object.v_1)
 
                 path     = "../simulation_results/1_phase_transitions/rho_transition/"
@@ -227,14 +232,16 @@ elif dim == "2D":
                 img_name = "R_" + str(input_object.R_1) + "_v_a_" + str(input_object.v_1)
 
                 D_rot_array  = np.arange(input_object.D_rot_1, input_object.D_rot_2, input_object.D_rot_inc)
-                y_data       = D_rot_array
+                y_data       = (2*D_rot_array*input_object.dt)**0.5
+
                 path_to_file = []
                 for D_rot in D_rot_array:
                     path_to_file.append(input_object.get_folder_path(N, input_object.L, input_object.v_1, input_object.R_1, D_rot, input_object.Neq, input_object.Nsim, input_object.dt))
+
                 va_mean_array = get_va(path_to_file)
                 va_array.append(va_mean_array)
             elif param_2 == "r":
-                y_label = r"$R$"
+                y_label    = r"$R$"
                 plot_label = r"$D_{rot} = $" + str(input_object.D_rot_1) + r", $v_a = $" + str(input_object.v_1)
 
                 path     = "../simulation_results/1_phase_transitions/rho_transition/"
@@ -243,19 +250,21 @@ elif dim == "2D":
 
                 R_array = np.arange(input_object.R_1, input_object.R_2, input_object.R_inc)
                 y_data  = R_array
+
                 path_to_file = []
                 for R in R_array:
                     path_to_file.append(input_object.get_folder_path(N, input_object.L, input_object.v_1, R, input_object.D_rot_1, input_object.Neq, input_object.Nsim, input_object.dt))
+
                 va_mean_array = get_va(path_to_file)
                 va_array.append(va_mean_array)
 
     elif param_1 == "eta":
-        x_label = r"$D_{rot}$"
+        x_label = r"$\sqrt{2D_{rot}\Delta t}$"
         D_rot_array  = np.arange(input_object.D_rot_1, input_object.D_rot_2, input_object.D_rot_inc)
-        x_data = D_rot_array
+        x_data = (2*D_rot_array*input_object.dt)**0.5
         for D_rot in D_rot_array:
             if param_2 == "rho":
-                y_label = r"$\rho$"
+                y_label    = r"$\rho$"
                 plot_label = r"$R = $" + str(input_object.R_1) + r", $v_a = $" + str(input_object.v_1)
 
                 path     = "../simulation_results/1_phase_transitions/eta_transitions/"
@@ -264,13 +273,16 @@ elif dim == "2D":
 
                 N_array = np.arange(input_object.N_1, input_object.N_2, input_object.N_inc)
                 y_data  = N_array*N_array/(input_object.L*input_object.L)
+
                 path_to_file = []
                 for N in N_array:
                     path_to_file.append(input_object.get_folder_path(N, input_object.L, input_object.v_1, input_object.R_1, D_rot, input_object.Neq, input_object.Nsim, input_object.dt))
+
                 va_mean_array = get_va(path_to_file)
                 va_array.append(va_mean_array)
+
             elif param_2 == "r":
-                y_label = r"$R$"
+                y_label    = r"$R$"
                 plot_label = r"$\rho = $" + str(input_object.N_1*input_object.N_1/(input_object.L*input_object.L)) + r", $v_a = $" + str(input_object.v_1)
 
                 path     = "../simulation_results/1_phase_transitions/eta_transitions/"
@@ -279,19 +291,21 @@ elif dim == "2D":
 
                 R_array = np.arange(input_object.R_1, input_object.R_2, input_object.R_inc)
                 y_data  = R_array
+
                 path_to_file = []
                 for R in R_array:
                     path_to_file.append(input_object.get_folder_path(input_object.N_1, input_object.L, input_object.v_1, R, D_rot, input_object.Neq, input_object.Nsim, input_object.dt))
+
                 va_mean_array = get_va(path_to_file)
                 va_array.append(va_mean_array)
 
     elif param_1 == "r":
         x_label = r"$R$"
-        R_array      = np.arange(input_object.R_1, input_object.R_2, input_object.R_inc)
-        x_data = R_array
+        R_array = np.arange(input_object.R_1, input_object.R_2, input_object.R_inc)
+        x_data  = R_array
         for R in R_array:
             if param_2 == "rho":
-                y_label = r"$\rho$"
+                y_label    = r"$\rho$"
                 plot_label = r"$D_{rot} = $" + str(input_object.D_rot_1) + r", $v_a = $" + str(input_object.v_1)
 
                 path     = "../simulation_results/1_phase_transitions/r_transition/"
@@ -300,14 +314,16 @@ elif dim == "2D":
 
                 N_array = np.arange(input_object.N_1, input_object.N_2, input_object.N_inc)
                 y_data  = N_array*N_array/(input_object.L*input_object.L)
+
                 path_to_file = []
                 for N in N_array:
                     path_to_file.append(input_object.get_folder_path(N, input_object.L, input_object.v_1, R, input_object.D_rot_1, input_object.Neq, input_object.Nsim, input_object.dt))
+
                 va_mean_array = get_va(path_to_file)
                 va_array.append(va_mean_array)
 
             elif param_2 == "eta":
-                y_label = r"$D_{rot}$"
+                y_label    = r"$\sqrt{2D_{rot}\Delta t}$"
                 plot_label = r"$\rho = $" + str(input_object.N_1*input_object.N_1/(input_object.L*input_object.L)) + r", $v_a = $" + str(input_object.v_1)
 
                 path     = "../simulation_results/1_phase_transitions/r_transition/"
@@ -315,10 +331,12 @@ elif dim == "2D":
                 img_name = "rho_" + str(input_object.N_1/input_object.L) + "_v_a_" + str(input_object.v_1)
 
                 D_rot_array  = np.arange(input_object.D_rot_1, input_object.D_rot_2, input_object.D_rot_inc)
-                y_data       = D_rot_array
+                y_data       = (2*D_rot_array*input_object.dt)**0.5
+
                 path_to_file = []
                 for D_rot in D_rot_array:
                     path_to_file.append(input_object.get_folder_path(input_object.N_1, input_object.L, input_object.v_1, R, D_rot, input_object.Neq, input_object.Nsim, input_object.dt))
+
                 va_mean_array = get_va(path_to_file)
                 va_array.append(va_mean_array)
 

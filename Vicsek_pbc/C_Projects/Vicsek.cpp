@@ -71,7 +71,8 @@ void Vicsek::rbc(double &x, double &y) {
 }
 
 double Vicsek::calculate_mean_angle(int i) {
-    double avg_angle = 0.;
+    double avg_sin = 0.; // theta[i]; // 0.;
+    double avg_cos = 0.;
     int number_of_particles = 0;
 
     for (int j=0; j<N; j++) {
@@ -82,11 +83,15 @@ double Vicsek::calculate_mean_angle(int i) {
 
         double r_ij_2 = dx*dx + dy*dy;
         if (r_ij_2 < R*R) { // && phi < 0.5*phi_vision) {
-            avg_angle += theta[j];
+            avg_sin += sin(theta[j]);
+            avg_cos += cos(theta[j]);
             number_of_particles += 1;
         }
     }
-    avg_angle = avg_angle/number_of_particles;
+    avg_sin = avg_sin/(double) number_of_particles;
+    avg_cos = avg_cos/(double) number_of_particles;
+
+    double avg_angle = atan2(avg_sin,avg_cos);
     return avg_angle;
 }
 
@@ -126,27 +131,32 @@ void Vicsek::md_step_vicsek(double dt){
 
         theta[i] = avg_angle[i] + diff_term*z1;
 
-        double toRound = theta[i] / (2 * PI);
+        //double toRound = theta[i] / (2 * PI);
 
-        if(toRound < 0) {
-        	toRound = - toRound;
-        }
+        //if(toRound < 0) {
+        	//toRound = - toRound;
+        //}
 
-        int numberPi = ceil(toRound);
+        //int numberPi = ceil(toRound);
 
-        if(theta[i] < 0) {
-        	theta[i] += numberPi * 2 * PI;
-        }
+        //if(theta[i] < 0) {
+        	//theta[i] += numberPi * 2 * PI;
+        //}
 
-        else if(theta[i] > 0) {
-        	theta[i] -= numberPi * 2 * PI;
-        }
+        //else if(theta[i] > 0) {
+        	//theta[i] -= numberPi * 2 * PI;
+        //}
+
+        theta[i] = check_angle(theta[i]); // atan2(sin(theta[i]), cos(theta[i])); // theta[i] = check_angle(theta[i], -PI, PI);
+        // theta[i] = fmod(2.*PI + fmod(theta[i], 2.*PI), 2.*PI);
 
         pbc(x[i], y[i]);
     }
 }
 
-
+double Vicsek::check_angle(double x) {
+    return atan2(sin(x), cos(x)); // x-ceil(x/(2.*PI))*2.*PI+2.*PI; // atan2(sin(x), cos(x));
+}
 
 double Vicsek::calculate_va() {
     // calculate normalized average velocity

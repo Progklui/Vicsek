@@ -43,4 +43,5 @@ class Vicsek {
         void init_uniform();
         void init_random();
         double check_vision(int, int);
+        double check_angle(double);
 };

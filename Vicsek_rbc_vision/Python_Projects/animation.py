@@ -39,6 +39,9 @@ def update(frame):
         ax.set_xticks([])
         ax.set_yticks([])
 
+        ax.set_xlim(-1.05*input_object.L/2, 1.05*input_object.L/2)
+        ax.set_ylim(-1.05*input_object.L/2, 1.05*input_object.L/2)
+
 # ┌───────────┐
 # │ Read data │
 # └───────────┘
@@ -57,6 +60,7 @@ for folder_path in o_folder_path:
 
     t = np.linspace(0, int(input_object.dt*input_object.Nsim), int(input_object.Nsim/input_object.Nsave)+1)
     for i in t:
+        config_file_name = "/configuration_t_{0}00000".format(i)
         data  = np.loadtxt(folder_path+config_file_name, delimiter=' ').T
 
         x     = data[0] # np.array(pd.read_csv(folder_path + "/configuration_t_{0}00000".format(i), usecols=[0], delimiter=" "))[:, -1]
@@ -86,7 +90,7 @@ for folder_path in o_folder_path:
     animator = ani.FuncAnimation(fig, update, frames=range(len(xData)), interval=intervall_rate)
 
     file_name = folder_path + r"/animation.mp4"
-    writervideo = ani.FFMpegWriter(fps=60)
+    writervideo = ani.FFMpegWriter(fps=10)
     animator.save(file_name, writer=writervideo)
 
     plt.show()
