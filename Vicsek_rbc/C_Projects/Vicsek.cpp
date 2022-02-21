@@ -84,7 +84,8 @@ void Vicsek::rbc_theta(double x, double y, double &theta) {
 }
 
 double Vicsek::calculate_mean_angle(int i) {
-    double avg_angle = 0.; // theta[i]; // 0.;
+    double avg_sin = 0.; // theta[i]; // 0.;
+    double avg_cos = 0.;
     int number_of_particles = 0;
 
     for (int j=0; j<N; j++) {
@@ -96,11 +97,15 @@ double Vicsek::calculate_mean_angle(int i) {
         double r_ij_2 = dx*dx + dy*dy;
         if (r_ij_2 <= R*R) { // && phi < 0.5*phi_vision) {
             // rbc_theta(x[j], y[j], theta[j]);
-            avg_angle += theta[j];
+            avg_sin += sin(theta[j]);
+            avg_cos += cos(theta[j]);
             number_of_particles += 1;
         }
     }
-    avg_angle = avg_angle/number_of_particles;
+    avg_sin = avg_sin/(double) number_of_particles;
+    avg_cos = avg_cos/(double) number_of_particles;
+
+    double avg_angle = atan2(avg_sin,avg_cos); // avg_angle/(double) number_of_particles;
     return avg_angle;
 }
 
@@ -126,6 +131,7 @@ void Vicsek::md_step_vicsek(double dt){
     for (int i=0; i<N; i++) {
         // calculate average orientation of nearby particles
         avg_angle[i] = calculate_mean_angle(i);
+        // avg_angle[i] = check_angle(avg_angle[i]);
     }
     for (int i=0; i<N; i++) {
         // generate noise parameter
@@ -139,28 +145,19 @@ void Vicsek::md_step_vicsek(double dt){
         y[i] = y[i] + v*sin(theta[i])*dt;
 
         theta[i] = avg_angle[i] + diff_term*z1;
-
-        double toRound = theta[i] / (2 * PI);
-
-        if(toRound < 0) {
-        	toRound = - toRound;
-        }
-
-        int numberPi = ceil(toRound);
-
-        if(theta[i] < 0) {
-        	theta[i] += numberPi * 2 * PI;
-        }
-
-        else if(theta[i] > 0) {
-        	theta[i] -= numberPi * 2 * PI;
-        }
+        // theta[i] = fmod(2.*PI + fmod(theta[i], 2.*PI), 2.*PI);
+        theta[i] = check_angle(theta[i]);  // check_angle(theta[i], -PI, PI);
 
         rbc_theta(x[i], y[i], theta[i]);
+        theta[i] = check_angle(theta[i]); // atan2(sin(theta[i]), cos(theta[i])); // theta[i] = check_angle(theta[i], -PI, PI);
+        // theta[i] = fmod(2.*PI + fmod(theta[i], 2.*PI), 2.*PI);
         rbc(x[i], y[i]);
     }
 }
 
+double Vicsek::check_angle(double x) {
+    return atan2(sin(x), cos(x)); // x-ceil(x/(2.*PI))*2.*PI+2.*PI; // atan2(sin(x), cos(x));
+}
 
 
 double Vicsek::calculate_va() {
