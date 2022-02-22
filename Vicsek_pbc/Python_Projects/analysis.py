@@ -27,6 +27,8 @@ from uncertainties import ufloat_fromstr
 input_object   = calc.handle_input()
 o_folder_path  = input_object.get_params()
 
+critical_exp_va_mean = np.zeros(len(o_folder_path))
+
 for folder_path in o_folder_path:
     print("----------------------------")
     print("Folder path: ", folder_path)
