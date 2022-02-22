@@ -2,21 +2,6 @@
 
 \begin{frame}
 	\frametitle{2) Periodic Boundaries}
-	\textbf{Theory.}\footnote{\tiny{elektronik-kompendium. \url{https://www.elektronik-kompendium.de/sites/bau/0201211.htm}. Accessed on the 15.11.2021.}}
-	\begin{itemize}
-		\item highly doped n- and p-layer
-		\item thinner barrier layer:
-		    \begin{enumerate}
-		        \item High field strengths due to $E = \frac{U}{d}$
-		        \item At $U = U_{\text{Z}} \Rightarrow$ field kicks out electrons from crystal bonds
-		        \item Avalanche-like charge multiplication
-		        \item Current even in blocking direction
-		    \end{enumerate}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	\frametitle{2) Periodic Boundaries}
 	\textbf{Trajectory.} Example.
 	\begin{itemize}
 	    \item $\rho = 400, v = 0.03, R = 0.01, D_{\text{rot}} = 0.01, \Delta t = 1.0$
@@ -39,6 +24,35 @@
 	\begin{figure}[H]
   		\includegraphics[width=\textwidth]{images/chapter2/N_20_L_1.000000_v_0.030000_R_D_0.010000.png} 
   		%\caption*{Cantillano C., Grundpraktikum 2: Halbleiterbauelemente. Internal Proceedings. University of Innsbruck , 2021.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{2) Periodic Boundaries}
+	\textbf{Phase transitions.} Simulation settings.
+	\begin{itemize}
+	    \item $N_{\text{sim}} = 3000, N_{\text{eq}} = 1000, N_{\text{save}} = 1$ 
+	    \item Fix $v$: vary
+	    	\begin{itemize}
+	    		\item $R$ and $D_{\text{rot}}$
+	    		\item $\rho$ and $D_{\text{rot}}$
+	    		\item $\rho$ and $R$
+	    	\end{itemize}
+	    \item Plot $\overline{v}_a$ against varying parameters
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{2) Periodic Boundaries}
+	\textbf{Phase transitions.} Comparing with reference.
+	\begin{itemize}
+	    \item Reference: $v = 0.03, R = 1.0, D_{\text{rot}} = 0.01, \Delta t = 1.0, \left(N,L\right) = \left(40,3.1\right), \left(100,5\right), \left(400,10\right), \left(4000,31.6\right), \left(10000,50\right)$
+	    \item Our system: $v = 0.03$
+	    % \item Trend behaviour is reproduced
+	\end{itemize}
+	\begin{figure}[H]
+  		\includegraphics[width=\textwidth]{images/chapter2/va_against_eta_reference.png} 
+  		\caption*{(left) Tamás Vicsek, András Czirók, Eshel Ben-Jacob, Inon Cohen, and Ofer Shochet. Novel Type of Phase Transition in a System of Self-Driven Particles. Phys. Rev. Lett. 75, 1226 – Published 7 August 1995}
 	\end{figure}
 \end{frame}
 

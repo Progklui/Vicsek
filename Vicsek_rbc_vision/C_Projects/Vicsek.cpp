@@ -65,29 +65,52 @@ void Vicsek::pbc(double &x, double &y) {
 
 void Vicsek::rbc(double &x, double &y) {
     // apply periodic boundary conditions
-    if (x >= L/2.0) x = -x;
-    if (x < -L/2.0) x = -x;
-    if (y >= L/2.0) y = -y;
-    if (y < -L/2.0) y = -y;
+    if (x >= L/2.0) x = -x+L;
+    if (x < -L/2.0) x = -x-L;
+    if (y >= L/2.0) y = -y+L;
+    if (y < -L/2.0) y = -y-L;
+
+    //if (x >= L/2.0) x -= L;
+    //if (x < -L/2.0) x += L;
+    //if (y >= L/2.0) y -= L;
+    //if (y < -L/2.0) y += L;
+}
+
+void Vicsek::rbc_theta(double x, double y, double &theta) {
+    // apply periodic boundary conditions
+    if (x >= L/2.0) theta = PI - theta;
+    if (x < -L/2.0) theta = PI - theta;
+    if (y >= L/2.0) theta = 2*PI - theta;
+    if (y < -L/2.0) theta = 2*PI - theta;
 }
 
 double Vicsek::calculate_mean_angle(int i) {
-    double avg_angle = 0.;
+    double avg_sin = 0.; // theta[i]; // 0.;
+    double avg_cos = 0.;
     int number_of_particles = 0;
 
     for (int j=0; j<N; j++) {
         double dx = x[i] - x[j];
         double dy = y[i] - y[j];
 
-        rbc(dx, dy);
+        // rbc(dx, dy);
 
         double r_ij_2 = dx*dx + dy*dy;
-        if (r_ij_2 < R*R) && phi < 0.5*phi_vision) {
-            avg_angle += theta[j];
-            number_of_particles += 1;
+        if (r_ij_2 <= R*R) { // && phi < 0.5*phi_vision) {
+            double phi = check_vision(i, j);
+            // printf("phi = %f\n", phi_vision);
+            if (phi < 0.5*phi_vision) {
+                avg_sin += sin(theta[j]);
+                avg_cos += cos(theta[j]);
+                number_of_particles += 1;
+                // printf("here\n");
+            }
         }
     }
-    avg_angle = avg_angle/number_of_particles;
+    avg_sin = avg_sin/(double) number_of_particles;
+    avg_cos = avg_cos/(double) number_of_particles;
+
+    double avg_angle = atan2(avg_sin,avg_cos); // avg_angle/(double) number_of_particles;
     return avg_angle;
 }
 
@@ -95,13 +118,16 @@ double Vicsek::check_vision(int i, int j) {
     double dx = x[i] - x[j];
     double dy = y[i] - y[j];
 
-    rbc(dx, dy);
+    pbc(dx, dy);
 
     double r_ij = sqrt(dx*dx + dy*dy);
     double scalar_prod = dx*cos(theta[i]) + dy*sin(theta[i]);
 
-    double phi = arccos(scalar_prod/r_ij);
-
+    double phi = 0;
+    if (r_ij > 0) {
+        phi = acos(scalar_prod/r_ij);
+    }
+    //printf("phi_2 = %f\n", phi);
     return phi;
 }
 
@@ -126,28 +152,18 @@ void Vicsek::md_step_vicsek(double dt){
         y[i] = y[i] + v*sin(theta[i])*dt;
 
         theta[i] = avg_angle[i] + diff_term*z1;
+        theta[i] = check_angle(theta[i]);  // check_angle(theta[i], -PI, PI);
 
-        double toRound = theta[i] / (2 * PI);
-
-        if(toRound < 0) {
-        	toRound = - toRound;
-        }
-
-        int numberPi = ceil(toRound);
-
-        if(theta[i] < 0) {
-        	theta[i] += numberPi * 2 * PI;
-        }
-
-        else if(theta[i] > 0) {
-        	theta[i] -= numberPi * 2 * PI;
-        }
-
+        rbc_theta(x[i], y[i], theta[i]);
+        theta[i] = check_angle(theta[i]); // atan2(sin(theta[i]), cos(theta[i])); // theta[i] = check_angle(theta[i], -PI, PI);
+        // theta[i] = fmod(2.*PI + fmod(theta[i], 2.*PI), 2.*PI);
         rbc(x[i], y[i]);
     }
 }
 
-
+double Vicsek::check_angle(double x) {
+    return atan2(sin(x), cos(x));
+}
 
 double Vicsek::calculate_va() {
     // calculate normalized average velocity

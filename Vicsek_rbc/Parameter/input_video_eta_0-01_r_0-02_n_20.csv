@@ -15,6 +15,6 @@ etaEnd;0.020000
 etaIncr;0.010000
 Nsim;1500
 Nsave;1
-Neq;1000
+Neq;0
 printconfig;1
 init;1

@@ -1,0 +1,174 @@
+%% Begin slides template file
+\documentclass[11pt,t,usepdftitle=false,aspectratio=169]{beamer}
+%% ------------------------------------------------------------------
+%% - aspectratio=43: Set paper aspect ratio to 4:3.
+%% - aspectratio=169: Set paper aspect ratio to 16:9.
+%% ------------------------------------------------------------------
+
+%% Graphics
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{rotating}
+
+\usepackage{media9} 
+
+\usepackage{xcolor}
+\usepackage{xfrac}
+\usepackage[export]{adjustbox}[2011/08/13]
+
+\usepackage{booktabs}
+
+%% Tables and Lists
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{tabu}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{siunitx}
+
+\usepackage{float} 
+\usepackage{svg}
+\usepackage{subcaption}
+
+%% special packages
+\usepackage{caption}
+\captionsetup[figure]{font=tiny,labelfont=tiny}
+\usepackage{multimedia}
+
+\usepackage{animate}
+
+\usetheme[nototalframenumber,logo]{uibk} % nototalframenumber,foot, also an option
+%% ------------------------------------------------------------------
+%% - foot: Add a footer line for conference name and date.
+%% - logo: Add the university logo in the footer (only if 'foot' set).
+%% - bigfoot/sasquatch: Larger font size in footer.
+%% - nototalslidenumber: Hide the total number of slides (only if 'foot' set)
+%% - license: Add CC-BY license symbol to title slide (e.g., for conference uploads)
+%%   (TODO: At the moment no other licenses are supported.)
+%% - licenseall: Add CC-BY license symbol to all subsequent slides slides
+%% - url: use \url{} rather than \href{} on the title page
+%% ------------------------------------------------------------------
+
+%% ------------------------------------------------------------------
+%% The official corporate colors of the university are predefined and
+%% can be used for e.g., highlighting something. Simply use
+%% \color{uibkorange} or \begin{color}{uibkorange} ... \end{color}
+%% Defined colors are:
+%% - uibkblue, uibkbluel, uibkorange, uibkorangel, uibkgray, uibkgraym, uibkgrayl
+%% The frametitle color can be easily adjusted e.g., to black with
+%% \setbeamercolor{titlelike}{fg=black}
+%% ------------------------------------------------------------------
+
+%\setbeamercolor{verbcolor}{fg=uibkorange}
+%% ------------------------------------------------------------------
+%% Setting a highlight color for verbatim output such as from
+%% the commands \pkg, \email, \file, \dataset 
+%% ------------------------------------------------------------------
+
+
+%% information for the title page ('short title' is the pdf-title that is shown in viewer's titlebar)
+\title[Vicsek Model]{Vicsek Model}
+\subtitle{A 2D model for modelling swarm behaviour}
+\URL{}
+
+\author[Florian Kluibenschedl, René Schwarz, Ariel Harnik]{Florian KLUIBENSCHEDL, René SCHWARZ and Ariel HARNIK}
+%('short author' is the pdf-metadata Author)
+%% If multiple authors are required and the font size is too large you
+%% can overrule the font size of author and url by calling:
+%\setbeamerfont{author}{size*={10pt}{10pt},series=\mdseries}
+%\setbeamerfont{url}{size*={10pt}{10pt},series=\mdseries}
+%\URL{}
+%\subtitle{}
+
+\footertext{Experiment 4}
+\date{2021-11-08}
+
+\headerimage{3}
+%% ------------------------------------------------------------------
+%% The theme offers four different header images based on the
+%% corporate design of the university of innsbruck. Currently
+%% 1, 2, 3 and 4 is allowed as input to \headerimage{...}. Default
+%% or fallback is '1'.
+%% ------------------------------------------------------------------
+
+\begin{document}
+
+%% ALTERNATIVE TITLEPAGE
+%% The next block is how you add a titlepage with the 'nosectiontitlepage' option, which switches off
+%% the default behavior of creating a titlepage every time a \section{} is defined.
+%% Then you can use \section{} as it's originally intended, including a table of contents.
+% \usebackgroundtemplate{\includegraphics[width=\paperwidth,height=\paperheight]{titlebackground.pdf}}
+% \begin{frame}[plain]
+%     \titlepage
+% \end{frame}
+% \addtocounter{framenumber}{-1}
+%\usebackgroundtemplate{}}
+
+%% Table of Contents, if wanted:
+%% this requires the 'nosectiontitlepage' option and setting \section{}'s as you want them to appear here.
+%% Subsections and subordinates are suppressed in the .sty at the moment, search
+%% for \setbeamertemplate{subsection} and replace the empty {} with whatever you want.
+%% Although it's probably too much for a presentation, maybe for a lecture.
+% \begin{frame}
+%     \vspace*{1cm plus 1fil}
+%     \tableofcontents
+%     \vspace*{0cm plus 1fil}
+% \end{frame}
+
+
+	%% this sets the first PDF bookmark and triggers generation of the title page
+	\section{Vicsek model}
+
+	%% this just generates PDF bookmarks
+	\subsection{Content}
+	%% first slide
+	\begin{frame}
+		\frametitle{Content}
+  		\textbf{1) Motivation and Theory.} 
+  		
+  		\bigskip
+  		\textbf{2) Periodic Boundaries.} 
+  		
+  		\bigskip
+  		\textbf{3) Reflecting Boundaries.}
+  		
+  		\bigskip
+  		\textbf{4) Periodic Boundaries with Vision.}
+  		
+  		\bigskip
+  		\textbf{5) Reflecting Boundaries with Vision.}
+  		
+  		\bigskip
+  		\textbf{6) Conclusion.} + discussion.
+	\end{frame}
+
+	\input{content/chapter1.tex}
+	\input{content/chapter2.tex}
+	\input{content/chapter3.tex}
+	\input{content/chapter4.tex}
+	\input{content/chapter5.tex}
+	\input{content/chapter6.tex}
+		
+	%% to show a last slide similar to the title slide: information for the last page
+	\title{Thank you for your attention!}
+	\subtitle{}
+	\section{End}
+	
+	\appendix
+	
+	\begin{frame}
+		\frametitle{A-5) Reflecting Boundaries with Vision}
+		\textbf{Trajectories.} Dependence on Vision Angle .
+		\begin{itemize}
+	    	\item $\rho = 400, v = 0.03, R = 0.025, D_{\text{rot}} = 0.01, \Delta t = 1.0, N_{\text{sim}} = 1500, N_{\text{eq}} = 1000$
+	    	\item $v_a$ grows with vision angle
+	    	\item Less order and higher fluctuations for rbc
+		\end{itemize}
+		\begin{figure}[H]
+  			\includegraphics[width=\textwidth]{images/chapter5/trajectory_comp_N_20_L_1.000000_v_0.030000_R_0.030000_D_0.010000.png} 
+  		%\caption*{Cantillano C., Grundpraktikum 2: Halbleiterbauelemente. Internal Proceedings. University of Innsbruck , 2021.}
+		\end{figure}
+	\end{frame}
+\end{document}
+

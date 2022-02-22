@@ -1,10 +1,36 @@
 \subsection{Reflecting Boundaries with Vision}
 
 \begin{frame}
-	\frametitle{5) Reflecting Boundaries with Vision.}
-	\textbf{Theory.} Symbol.
+	\frametitle{5) Reflecting Boundaries with Vision}
+	\textbf{Order parameter.} Comparing with pbc.
+	\begin{itemize}
+	    \item $\rho = 400, v = 0.03, R = 0.025, D_{\text{rot}} = 0.01, \Delta t = 1.0, N_{\text{sim}} = 1500, N_{\text{eq}} = 1000$
+	    \item $v_a$ grows with vision angle
+	    \item Less order and higher fluctuations for rbc
+	\end{itemize}
+	\begin{table}[H]
+  		\centering
+  		%\caption[Content, Quelle: Autor]{Caption}
+      
+ 		%\label{tab:TableTag}
+  		\begin{tabular}{@{}l|cccp{4.5cm}l@{}}
+    		\toprule
+       			& $\overline{v}_a\left(\varphi = \pi/3\right)\pm\sigma\left(\overline{v}_a\right)$ & $\overline{v}_a\left(\varphi = 2\pi/3\right)\pm\sigma\left(\overline{v}_a\right)$ & $\overline{v}_a\left(\varphi = 2\pi\right)\pm\sigma\left(\overline{v}_a\right)$\\ \midrule
+       		pbc	& \num{0.855}$\pm$\num{0.014} & \num{0.907}$\pm$ \num{0.013} & \num{0.953}$\pm$\num{0.01} \\
+       		rbc & \num{0.397}$\pm$\num{0.139} & \num{0.461}$\pm$\num{0.136} & \num{0.496}$\pm$\num{0.191} \\ \bottomrule
+  		\end{tabular}
+	\end{table}
+\end{frame}
+
+\begin{frame}
+	\frametitle{5) Reflecting Boundaries with Vision}
+	\textbf{Configurations.} Comparing Angles.
+	\begin{itemize}
+	     \item $\rho = 400, v = 0.03, R = 0.025, D_{\text{rot}} = 0.01, \Delta t = 1.0, N_{\text{sim}} = 1500, N_{\text{eq}} = 1000$
+	    \item Flock size grows with vision angle
+	\end{itemize}
 	\begin{figure}[H]
-  		\includegraphics[width=0.3\textwidth]{images/chapter5/8_theory_scheme_operational_amplifier.png} 
-  		\caption*{Cantillano C., Grundpraktikum 2: Halbleiterbauelemente. Internal Proceedings. University of Innsbruck , 2021.}
+  		\includegraphics[width=\textwidth]{images/chapter5/configuration_comp_N_20_L_1.000000_v_0.030000_R_0.030000_D_0.010000.png} 
+  		%\caption*{Cantillano C., Grundpraktikum 2: Halbleiterbauelemente. Internal Proceedings. University of Innsbruck , 2021.}
 	\end{figure}
 \end{frame}
