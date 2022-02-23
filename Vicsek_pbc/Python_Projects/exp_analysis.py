@@ -83,7 +83,7 @@ plt.scatter((critical_eta - other_eta)/critical_eta, other_va, marker="x", label
 
 plt.axhline(y=1, color="grey", linestyle="dashed", linewidth=1)
 
-plt.xlabel(r"$(\sqrt{2D_{rot}\Delta t} - \sqrt{2D_{rot}^{c}\Delta t})/\sqrt{2D_{rot}^{c}\Delta t}$")
+plt.xlabel(r"$(\sqrt{2D_{rot}^{c}\Delta t} - \sqrt{2D_{rot}\Delta t})/\sqrt{2D_{rot}^{c}\Delta t}$")
 plt.ylabel(r"$v_a$")
 
 plt.legend(loc="upper left")
